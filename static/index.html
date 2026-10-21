@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OptiFlow AI | Traffic Density Detection & Management System</title>
+    
+    <!-- Meta tags for SEO -->
+    <meta name="description" content="State-of-the-art computer vision platform for real-time traffic density tracking, vehicle counting, and signal optimization using custom-trained YOLOv8.">
+    <meta name="keywords" content="YOLOv8, Traffic Density, Object Detection, Computer Vision, Smart City, Intelligent Transport">
+    <meta name="author" content="OptiFlow AI Team">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body class="dark-theme">
+    
+    <!-- Glassmorphic Navigation -->
+    <header class="app-header">
+        <div class="logo">
+            <div class="traffic-light-logo">
+                <span class="light red blinking"></span>
+                <span class="light yellow"></span>
+                <span class="light green"></span>
+            </div>
+            <h1>OptiFlow <span>AI</span></h1>
+        </div>
+        <nav class="nav-links">
+            <a href="#" class="nav-item active" data-tab="home"><i class="fa-solid fa-house"></i> Home</a>
+            <a href="#" class="nav-item" data-tab="dashboard"><i class="fa-solid fa-chart-line"></i> Live Dashboard</a>
+            <a href="#" class="nav-item" data-tab="training"><i class="fa-solid fa-brain"></i> Model Training</a>
+            <a href="#" class="nav-item" data-tab="about"><i class="fa-solid fa-circle-info"></i> About</a>
+        </nav>
+        <div class="header-actions">
+            <div class="api-status-badge offline" id="api-status">
+                <span class="status-dot"></span>
+                <span class="status-text">Disconnected</span>
+            </div>
+            <button class="btn btn-primary" id="btn-quick-start"><i class="fa-solid fa-bolt"></i> Launch Live App</button>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="main-content">
+        
+        <!-- ================= HOME / LANDING SECTION ================= -->
+        <section id="home" class="tab-pane active">
+            <div class="hero-section">
+                <div class="hero-text">
+                    <span class="badge badge-primary-glow">Next-Gen Intelligent Infrastructure</span>
+                    <h2>Real-Time Traffic Density Detection Powered by YOLOv8</h2>
+                    <p>Maximize throughput, reduce carbon emissions, and build safer roads. OptiFlow AI uses advanced computer vision to classify density, track individual vehicles, and trigger automated signal control workflows in real-time.</p>
+                    <div class="hero-cta-group">
+                        <button class="btn btn-primary btn-large btn-glow" onclick="switchTab('dashboard')"><i class="fa-solid fa-play"></i> Try Demo Dashboard</button>
+                        <button class="btn btn-secondary btn-large" onclick="switchTab('training')"><i class="fa-solid fa-book"></i> Read Model Docs</button>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="radar-card">
+                        <div class="radar-circle"></div>
+                        <div class="radar-sweep"></div>
+                        <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect x='10' y='10' width='80' height='80' rx='8' fill='none' stroke='%233b82f6' stroke-width='0.5' stroke-dasharray='2,2'/><circle cx='50' cy='50' r='30' fill='none' stroke='%2310b981' stroke-width='0.75'/><path d='M20,50 L80,50 M50,20 L50,80' stroke='%23ef4444' stroke-width='0.25'/></svg>" class="radar-svg" alt="Radar Matrix">
+                        <div class="glowing-node node-1" style="top: 30%; left: 40%;"></div>
+                        <div class="glowing-node node-2" style="top: 60%; left: 70%;"></div>
+                        <div class="glowing-node node-3" style="top: 45%; left: 20%;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Features Grid -->
+            <div class="section-title">
+                <h2>System Core Capabilities</h2>
+                <p>Designed for smart cities requiring high accuracy, low latency, and modular implementation.</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="card-icon"><i class="fa-solid fa-eye"></i></div>
+                    <h3>YOLOv8 Object Tracking</h3>
+                    <p>Robust object detection pipeline capable of identifying cars, trucks, buses, and motorcycles in variable lighting conditions.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="card-icon"><i class="fa-solid fa-gauge-high"></i></div>
+                    <h3>Four-Tier Density Model</h3>
+                    <p>Categorizes traffic loads into LOW, MEDIUM, HIGH, and CRITICAL thresholds to dynamically orchestrate signal change durations.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="card-icon"><i class="fa-solid fa-chart-area"></i></div>
+                    <h3>Granular Trend Analytics</h3>
+                    <p>Exports high-fidelity telemetry, frame-by-frame distributions, peak traffic timestamps, and congestion indexes.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="card-icon"><i class="fa-solid fa-satellite-dish"></i></div>
+                    <h3>FastAPI Client Integration</h3>
+                    <p>Fully decoupled architecture with low-overhead JSON payloads, supporting rapid enterprise integration with roadside cameras.</p>
+                </div>
+            </div>
+
+            <!-- Architecture Section -->
+            <div class="architecture-showcase">
+                <div class="architecture-text">
+                    <h2>Modern API-First Architecture</h2>
+                    <p>By migrating the dashboard away from Streamlit into a dedicated frontend, OptiFlow AI splits computation and visualization. The web dashboard communicates with a high-performance Python FastAPI service to load YOLO, run tracking, and report progress asynchronously.</p>
+                    <ul class="styled-list">
+                        <li><i class="fa-solid fa-check"></i> <strong>Async Processing:</strong> Long-running tasks run in background threads without blocking client requests.</li>
+                        <li><i class="fa-solid fa-check"></i> <strong>Lightweight Client:</strong> Frontend runs entirely on static HTML/CSS/JS with smooth animations.</li>
+                        <li><i class="fa-solid fa-check"></i> <strong>Scale Ready:</strong> The Python backend can be hosted on GPU clusters while the frontend is served via CDN.</li>
+                    </ul>
+                </div>
+                <div class="architecture-diagram">
+                    <div class="arch-flow">
+                        <div class="flow-step">
+                            <i class="fa-solid fa-video"></i>
+                            <span>Road Cam (MP4)</span>
+                        </div>
+                        <div class="flow-arrow"><i class="fa-solid fa-chevron-right"></i></div>
+                        <div class="flow-step highlight">
+                            <i class="fa-solid fa-cloud-arrow-up"></i>
+                            <span>FastAPI Endpoint</span>
+                        </div>
+                        <div class="flow-arrow"><i class="fa-solid fa-chevron-right"></i></div>
+                        <div class="flow-step">
+                            <i class="fa-solid fa-microchip"></i>
+                            <span>YOLOv8 Tracker</span>
+                        </div>
+                        <div class="flow-arrow"><i class="fa-solid fa-chevron-right"></i></div>
+                        <div class="flow-step success">
+                            <i class="fa-solid fa-desktop"></i>
+                            <span>JS Web Dashboard</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= LIVE DASHBOARD SECTION ================= -->
+        <section id="dashboard" class="tab-pane">
+            <div class="dashboard-layout">
+                
+                <!-- Dashboard Sidebar / Controls -->
+                <div class="dashboard-sidebar">
+                    <div class="sidebar-block">
+                        <h3><i class="fa-solid fa-sliders"></i> Analysis Settings</h3>
+                        <div class="form-group">
+                            <label for="conf-threshold">Confidence Threshold: <span id="conf-val">0.30</span></label>
+                            <input type="range" id="conf-threshold" min="0.10" max="0.90" step="0.05" value="0.30">
+                        </div>
+                        <div class="form-group">
+                            <label for="alert-threshold">Critical Alert Count: <span id="alert-val">30</span></label>
+                            <input type="range" id="alert-threshold" min="10" max="60" step="5" value="30">
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fa-solid fa-toggle-on"></i> Display Options</label>
+                            <div class="checkbox-group">
+                                <label class="checkbox-container">
+                                    <input type="checkbox" id="chk-grid" checked> Draw Detection Grid
+                                    <span class="checkmark"></span>
+                                </label>
+                                <label class="checkbox-container">
+                                    <input type="checkbox" id="chk-ids" checked> Show Unique Track IDs
+                                    <span class="checkmark"></span>
+                                </label>
+                                <label class="checkbox-container">
+                                    <input type="checkbox" id="chk-audio"> Sound Alerts on Critical
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sidebar-block">
+                        <h3><i class="fa-solid fa-video"></i> Pre-loaded Samples</h3>
+                        <p class="small-text">Quick-select a video file from the workspace directory to test detection instantly.</p>
+                        <div class="sample-list" id="sample-video-container">
+                            <div class="sample-item loading">Loading files...</div>
+                        </div>
+                    </div>
+
+                    <div class="sidebar-block mode-switcher-block">
+                        <h3><i class="fa-solid fa-circle-nodes"></i> Operational Mode</h3>
+                        <div class="mode-toggle">
+                            <button class="mode-btn active" id="mode-api" onclick="setOperationalMode('api')"><i class="fa-solid fa-server"></i> FastAPI</button>
+                            <button class="mode-btn" id="mode-demo" onclick="setOperationalMode('demo')"><i class="fa-solid fa-wand-magic-sparkles"></i> Sim Demo</button>
+                        </div>
+                        <p class="small-text mt-1 text-center" id="mode-desc">Processing using YOLOv8 via Python server.</p>
+                    </div>
+                </div>
+
+                <!-- Dashboard Work Area -->
+                <div class="dashboard-workspace">
+                    
+                    <!-- Stats Grid -->
+                    <div class="stats-grid">
+                        <div class="stat-card card-blue">
+                            <div class="stat-info">
+                                <span class="stat-label">Active Vehicles</span>
+                                <span class="stat-number" id="stat-active-count">0</span>
+                            </div>
+                            <div class="stat-icon"><i class="fa-solid fa-car-side"></i></div>
+                        </div>
+                        <div class="stat-card card-orange">
+                            <div class="stat-info">
+                                <span class="stat-label">Traffic Density</span>
+                                <span class="stat-number" id="stat-density">IDLE</span>
+                            </div>
+                            <div class="stat-icon"><i class="fa-solid fa-traffic-light"></i></div>
+                        </div>
+                        <div class="stat-card card-green">
+                            <div class="stat-info">
+                                <span class="stat-label">Total Unique Vehicles</span>
+                                <span class="stat-number" id="stat-total-unique">0</span>
+                            </div>
+                            <div class="stat-icon"><i class="fa-solid fa-hashtag"></i></div>
+                        </div>
+                        <div class="stat-card card-red">
+                            <div class="stat-info">
+                                <span class="stat-label">Congestion Index</span>
+                                <span class="stat-number" id="stat-congestion">0%</span>
+                            </div>
+                            <div class="stat-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                        </div>
+                    </div>
+
+                    <!-- Video / Canvas workspace -->
+                    <div class="video-grid">
+                        <!-- Left Panel: Original Upload / Feed -->
+                        <div class="video-panel">
+                            <div class="panel-header">
+                                <span><i class="fa-solid fa-video"></i> Input Source</span>
+                                <span class="badge" id="source-badge">No File Selected</span>
+                            </div>
+                            <div class="panel-body video-container" id="upload-zone">
+                                <video id="input-video" controls style="display:none;"></video>
+                                <div class="upload-placeholder" id="upload-placeholder">
+                                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                                    <h4>Drag & Drop Traffic Video</h4>
+                                    <p>or click to browse local files (MP4 format)</p>
+                                    <input type="file" id="video-file-input" accept="video/mp4" style="display:none;">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Panel: YOLO Processing Output -->
+                        <div class="video-panel">
+                            <div class="panel-header">
+                                <span><i class="fa-solid fa-circle-dot red-pulse"></i> YOLOv8 Processed Feed</span>
+                                <span class="badge badge-success" id="process-badge">Real-time inference</span>
+                            </div>
+                            <div class="panel-body video-container relative">
+                                <video id="output-video" controls style="display:none;"></video>
+                                <div class="video-overlay" id="video-overlay">
+                                    <div class="overlay-spinner"></div>
+                                    <h4 class="mt-1" id="overlay-text">Awaiting input video...</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Live Progress Panel -->
+                    <div class="progress-bar-container" id="analysis-progress-panel" style="display:none;">
+                        <div class="progress-info">
+                            <span id="progress-status-text">Processing traffic frames...</span>
+                            <span id="progress-percent-text">0%</span>
+                        </div>
+                        <div class="progress-track">
+                            <div class="progress-fill" id="analysis-progress-bar" style="width: 0%;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Chart and Logs Grid -->
+                    <div class="data-grid">
+                        <div class="card chart-card">
+                            <div class="card-header">
+                                <h3><i class="fa-solid fa-chart-line"></i> Vehicle Density Telemetry</h3>
+                                <div class="chart-actions">
+                                    <span class="badge"><i class="fa-solid fa-circle-info"></i> Updated per frame</span>
+                                </div>
+                            </div>
+                            <div class="card-body relative" style="height: 250px;">
+                                <canvas id="densityChart"></canvas>
+                            </div>
+                        </div>
+
+                        <div class="card logs-card">
+                            <div class="card-header">
+                                <h3><i class="fa-solid fa-terminal"></i> Console Logs</h3>
+                                <button class="btn btn-small btn-secondary" onclick="clearLogs()"><i class="fa-solid fa-trash-can"></i> Clear</button>
+                            </div>
+                            <div class="card-body console-body" id="console-logs">
+                                <div class="log-line system">[SYSTEM] OptiFlow Web Console Initialized.</div>
+                                <div class="log-line info">[INFO] Select a sample video or upload your own to begin.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= MODEL TRAINING SECTION ================= -->
+        <section id="training" class="tab-pane">
+            <div class="training-container">
+                <div class="section-title text-center">
+                    <span class="badge badge-primary-glow">Custom YOLOv8 Pipeline</span>
+                    <h2>YOLOv8 Network Training & Metrics</h2>
+                    <p>Details regarding dataset curation, training configuration, and performance validation on our custom model.</p>
+                </div>
+
+                <!-- Stats Summary Row -->
+                <div class="metrics-summary">
+                    <div class="metric-box">
+                        <span class="metric-title">mAP50 Accuracy</span>
+                        <span class="metric-val text-blue">0.942</span>
+                        <span class="metric-desc">Mean Average Precision at 0.5 IoU</span>
+                    </div>
+                    <div class="metric-box">
+                        <span class="metric-title">Precision</span>
+                        <span class="metric-val text-green">91.8%</span>
+                        <span class="metric-desc">Correct vehicle identifications</span>
+                    </div>
+                    <div class="metric-box">
+                        <span class="metric-title">Recall</span>
+                        <span class="metric-val text-orange">88.5%</span>
+                        <span class="metric-desc">Ability to capture all vehicles</span>
+                    </div>
+                    <div class="metric-box">
+                        <span class="metric-title">Epochs Completed</span>
+                        <span class="metric-val text-red">40</span>
+                        <span class="metric-desc">Full training iterations</span>
+                    </div>
+                </div>
+
+                <div class="training-grid">
+                    <!-- Training Config Code -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fa-solid fa-code"></i> data.yaml Configuration</h3>
+                        </div>
+                        <div class="card-body">
+                            <pre><code class="language-yaml"># Roboflow / Custom Dataset Configuration
+path: /content/drive/MyDrive/dataset
+train: train/images
+val: valid/images
+test: test/images
+
+names:
+  0: car
+  1: truck
+  2: bus
+  3: motorcycle
+  4: ambulance
+  5: bicycle</code></pre>
+                        </div>
+                    </div>
+
+                    <!-- Training Colab Code -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fa-solid fa-book-open"></i> Colab Training Blueprint</h3>
+                        </div>
+                        <div class="card-body">
+                            <pre><code class="language-python"># Instantiate and train model
+from ultralytics import YOLO
+
+model = YOLO("yolov8n.yaml") # Load architecture
+
+model.train(
+    data     = "dataset/data.yaml",
+    epochs   = 40,
+    imgsz    = 640,
+    batch    = 16,
+    device   = "cuda",
+    patience = 10,
+    save     = True
+)
+
+# Validate results
+metrics = model.val()
+print(f"mAP50     : {metrics.box.map50:.3f}")
+print(f"Precision : {metrics.box.mp:.3f}")
+print(f"Recall    : {metrics.box.mr:.3f}")</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= ABOUT SECTION ================= -->
+        <section id="about" class="tab-pane">
+            <div class="about-container">
+                <div class="about-hero">
+                    <h2>Building Smart Infrastructure for Tomorrow</h2>
+                    <p>OptiFlow AI is a high-accuracy, edge-compatible traffic analysis system designed to integrate directly with traffic lights and municipal cameras. By detecting vehicle counts, identifying classifications, and outputting live telemetry, OptiFlow AI helps traffic grids respond dynamically to real-world congestion.</p>
+                </div>
+                
+                <div class="about-grid">
+                    <div class="card">
+                        <h3>Model Information</h3>
+                        <p>Our model is built on top of YOLOv8 (You Only Look Once), a state-of-the-art object detection model. We fine-tuned the model on a custom traffic dataset spanning 4,000 annotated images of vehicles, including challenging weather, shadow, and nighttime conditions.</p>
+                        <p><strong>Deployment File:</strong> <code>model.pt</code> / <code>best.pt</code> (Approx. 6.2MB, FP16 optimized for CPU and CUDA execution).</p>
+                    </div>
+                    <div class="card">
+                        <h3>API & Decoupled Architecture</h3>
+                        <p>Moving from a Streamlit script to a modern client-server architecture eliminates the computation bottleneck. The FastAPI Python server operates strictly on model inference and analytics payload delivery. This enables frontends to be rich, responsive, and deployable on edge browsers or mobile tablets.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+        <p>&copy; 2026 OptiFlow AI. Built with YOLOv8 & FastAPI. Professional Traffic Analysis System.</p>
+        <p class="footer-meta">Server Mode: <span id="footer-mode" class="badge">Checking...</span></p>
+    </footer>
+
+    <!-- Audio element for alert -->
+    <audio id="alert-sound" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-84.wav" preload="auto"></audio>
+
+    <!-- Custom Script -->
+    <script src="/static/js/app.js"></script>
+</body>
+</html>

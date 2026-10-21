@@ -1,0 +1,73 @@
+# Cell 1 — Mount Drive
+from google.colab import drive
+drive.mount("/content/drive")
+print("✅ Drive mounted")
+
+
+# Cell 2 — Check dataset
+import os
+DATASET_PATH = "/content/drive/MyDrive/dataset"  # ✅ your folder
+
+train = len(os.listdir(f"{DATASET_PATH}/train/images"))
+val   = len(os.listdir(f"{DATASET_PATH}/valid/images"))
+test  = len(os.listdir(f"{DATASET_PATH}/test/images"))
+
+print(f"Train : {train}")
+print(f"Val   : {val}")
+print(f"Test  : {test}")
+print(f"Total : {train + val + test}")
+
+
+
+# Cell 3 — Fix data.yaml
+import yaml
+
+with open(f"{DATASET_PATH}/data.yaml", "r") as f:
+    data = yaml.safe_load(f)
+
+data["path"]  = DATASET_PATH
+data["train"] = "train/images"
+data["val"]   = "valid/images"
+data["test"]  = "test/images"
+
+with open(f"{DATASET_PATH}/data.yaml", "w") as f:
+    yaml.dump(data, f)
+
+print("✅ data.yaml fixed")
+print(data)
+
+
+
+# Cell 4 — Install and Train
+!pip install ultralytics -q
+
+from ultralytics import YOLO
+
+model = YOLO("yolov8n.yaml")   # from scratch
+
+model.train(
+    data     = f"{DATASET_PATH}/data.yaml",
+    epochs   = 40,
+    imgsz    = 640,
+    batch    = 16,
+    device   = "cuda",
+    patience = 10,
+    save     = True,
+    cache    = True
+)
+print("✅ Training complete!")
+
+
+
+# Cell 5 — Check accuracy
+metrics = model.val()
+print(f"mAP50     : {metrics.box.map50:.3f}")
+print(f"Precision : {metrics.box.mp:.3f}")
+print(f"Recall    : {metrics.box.mr:.3f}")
+
+
+
+# Cell 6 — Download best.pt
+from google.colab import files
+files.download("runs/detect/train/weights/best.pt")
+print("✅ best.pt downloaded!")

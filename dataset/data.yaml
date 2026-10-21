@@ -1,0 +1,13 @@
+train: ../train/images
+val: ../valid/images
+test: ../test/images
+
+nc: 6
+names: ['Car', 'Jeep', 'Motorcycle', 'Tricycle', 'Truck', 'Van']
+
+roboflow:
+  workspace: rohithraghavs-workspace
+  project: cctv_vehicles-izekc
+  version: 1
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/rohithraghavs-workspace/cctv_vehicles-izekc/dataset/1
